@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBCE07">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Mentari Housekeeping</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+@font-face{font-family:Jost;font-weight:300;font-display:swap;src:url(fonts/jost-latin-300-normal.woff2) format('woff2')}
+@font-face{font-family:Jost;font-weight:400;font-display:swap;src:url(fonts/jost-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Jost;font-weight:500;font-display:swap;src:url(fonts/jost-latin-500-normal.woff2) format('woff2')}
+:root{--y:#FBCE07;--r:#DD1D21;--ink:#1d1d1d;--grey:#6b6b6b;--line:#e4e4e0;--soft:#f6f6f3;--ok:#2e7d32;--late:#d98200;--bad:#c62828;--bg:#fff}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:400 16px/1.45 Jost,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+[hidden]{display:none!important}
+header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px 8px;border-top:4px solid var(--y);max-width:760px;margin:0 auto}
+.brand{font-weight:300;text-transform:uppercase;letter-spacing:.22em;color:var(--grey);font-size:15px;line-height:1.35;cursor:pointer}
+.brand b{display:block;font-weight:500;color:var(--ink)}
+.tr{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+#ver{font-size:12px;color:var(--grey);letter-spacing:.08em}
+.lang{display:flex}
+.lang button{border:1px solid var(--line);background:#fff;padding:3px 9px;font:500 12px Jost,sans-serif;letter-spacing:.08em;color:var(--grey);cursor:pointer;margin-left:-1px}
+.lang button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+main{max-width:760px;margin:0 auto;padding:0 16px 40px}
+main.hasTabs{padding-bottom:96px}
+h1.title{font-weight:300;text-transform:uppercase;letter-spacing:.22em;color:var(--grey);font-size:20px;margin:16px 0 10px;line-height:1.3}
+h2{font-weight:500;font-size:17px;margin:20px 0 8px}
+h3{font-weight:500;font-size:15px;margin:0 0 4px}
+p{margin:6px 0}
+.sub,.muted{color:var(--grey);font-size:14px}
+.stack>*{margin:10px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wrap{display:flex;flex-wrap:wrap;gap:6px}
+.btn{display:block;width:100%;padding:15px 16px;border:1px solid var(--ink);border-radius:4px;background:#fff;color:var(--ink);font:500 16px Jost,sans-serif;letter-spacing:.04em;text-align:left;cursor:pointer}
+.btn.p{background:var(--y);border-color:var(--y)}
+.btn.d{color:var(--r);border-color:var(--r)}
+.btn.s{padding:9px 12px;font-size:14px;width:auto;display:inline-block}
+.btn.c{text-align:center}
+.btn small{display:block;font-weight:400;color:#444;letter-spacing:0}
+.btn[disabled]{opacity:.45;cursor:default}
+.link{background:none;border:0;color:var(--ink);text-decoration:underline;font:400 14px Jost,sans-serif;padding:4px 0;cursor:pointer}
+.card{border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:10px 0;background:#fff}
+.card.y{border-left:4px solid var(--y)}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);font-size:13px;white-space:nowrap;background:#fff}
+.s-done{background:#e8f5e9;border-color:#a5d6a7;color:#1b5e20}
+.s-late{background:#fff3e0;border-color:#ffcc80;color:#8a4b00}
+.s-missed{background:#ffebee;border-color:#ef9a9a;color:#b71c1c}
+.s-due{background:#fffde7;border-color:var(--y);color:#5c4d00;font-weight:500}
+.s-pending{color:var(--grey)}
+.st-open{background:#ffebee;border-color:#ef9a9a;color:#b71c1c}
+.st-inprogress{background:#fff3e0;border-color:#ffcc80;color:#8a4b00}
+.st-closed{background:#e8f5e9;border-color:#a5d6a7;color:#1b5e20}
+label{display:block;font-size:12px;letter-spacing:.1em;color:var(--grey);margin:14px 0 4px;text-transform:uppercase}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cfcfca;border-radius:4px;font:400 16px Jost,sans-serif;background:#fff;color:var(--ink)}
+textarea{min-height:92px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--y);outline-offset:0}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.banner{padding:10px 12px;border-radius:6px;margin:10px 0;font-size:14px}
+.banner.warn{background:#fff3e0;border:1px solid #ffcc80}
+.banner.bad{background:#ffebee;border:1px solid #ef9a9a}
+.banner.info{background:var(--soft);border:1px solid var(--line)}
+.banner.ok{background:#e8f5e9;border:1px solid #a5d6a7}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.seg button{flex:1 1 0;min-width:86px;padding:12px 6px;border:1px solid #cfcfca;background:#fff;border-radius:4px;font:500 14px Jost,sans-serif;color:var(--ink);cursor:pointer}
+.seg button.sel.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.seg button.sel.warn{background:var(--late);border-color:var(--late);color:#fff}
+.seg button.sel.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.item{padding:12px 0;border-bottom:1px solid var(--line)}
+.item .q{font-weight:500}
+.item .nb{margin-top:8px}
+.sticky{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom));margin-top:16px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:20}
+nav.tabs button{flex:1;padding:12px 4px 10px;border:0;background:none;font:500 12px Jost,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);cursor:pointer}
+nav.tabs button.on{color:var(--ink);box-shadow:inset 0 3px 0 var(--y)}
+.badge{background:var(--r);color:#fff;border-radius:99px;padding:0 6px;font-size:11px;margin-left:4px;letter-spacing:0}
+.gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+table.grid{border-collapse:collapse;font-size:11px;min-width:100%}
+.grid th,.grid td{border:1px solid #eee;text-align:center;padding:0;min-width:27px;height:32px;font-weight:400}
+.grid th{height:26px;color:var(--grey);background:#fafaf8}
+.grid th.today{background:var(--y);color:var(--ink);font-weight:500}
+.grid th.rl,.grid td.rl{position:sticky;left:0;background:#fff;text-align:left;padding:4px 8px;min-width:104px;max-width:128px;z-index:1;font-size:12px;border-right:2px solid var(--line);line-height:1.25}
+.grid th.rl{background:#fafaf8}
+.grid td.rl small{display:block;color:var(--grey);font-size:10.5px}
+.grid .c-done{background:#c8e6c9;color:#1b5e20}
+.grid .c-late{background:#ffe0b2;color:#8a4b00}
+.grid .c-missed{background:#ffcdd2;color:#b71c1c}
+.grid .c-due{background:#fff59d}
+.grid .c-off{background:repeating-linear-gradient(45deg,#f1f1ee,#f1f1ee 4px,#fafaf8 4px,#fafaf8 8px)}
+.grid .tm,.grid .by{display:none}
+.grid td[data-act]{cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--grey);margin:8px 0}
+.legend i{display:inline-block;width:14px;height:14px;border:1px solid #ddd;vertical-align:-3px;margin-right:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.stat{border:1px solid var(--line);border-radius:6px;padding:10px;text-align:center}
+.stat b{display:block;font-size:24px;font-weight:300;letter-spacing:.04em}
+.stat span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey)}
+.bar{height:8px;background:#eee;border-radius:99px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--ok)}
+.bar i.lo{background:var(--bad)}.bar i.mid{background:var(--late)}
+.scanner{position:fixed;inset:0;background:#000;z-index:50;display:flex;flex-direction:column}
+.scanner video{flex:1;object-fit:cover;width:100%;min-height:0}
+.scanner .frame{position:absolute;left:50%;top:42%;width:62vmin;height:62vmin;transform:translate(-50%,-50%);border:3px solid var(--y);border-radius:14px;box-shadow:0 0 0 100vmax rgba(0,0,0,.45);pointer-events:none}
+.scanner .sbar{position:absolute;left:0;right:0;bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:rgba(0,0,0,.65);color:#fff}
+.scanner .sbar .btn{background:#fff;margin-top:10px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;z-index:60}
+.modal .box{background:#fff;width:100%;max-width:560px;border-radius:14px 14px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto}
+.modal img{max-width:100%;border-radius:6px;display:block;margin:8px auto}
+.preview{max-width:100%;max-height:220px;border-radius:6px;margin-top:8px;display:block}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:80;max-width:90vw;text-align:center;font-size:14px}
+#toast.show{opacity:1}
+#busy{position:fixed;top:0;left:0;height:3px;width:0;background:var(--r);z-index:90}
+body.busy #busy{width:75%;transition:width 8s cubic-bezier(.1,.7,.2,1)}
+.label-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.label{border:2px solid var(--ink);border-radius:8px;padding:14px;text-align:center;break-inside:avoid;background:#fff}
+.label svg{width:64%;max-width:220px;height:auto;display:block;margin:0 auto 8px}
+.label h3{font-size:19px;letter-spacing:.04em;margin:4px 0}
+.label .code{font-size:12px;color:var(--grey);letter-spacing:.12em}
+.label .ln{font-size:13px;margin-top:6px}
+.label .bar2{height:6px;background:var(--y);margin:-14px -14px 12px;border-radius:6px 6px 0 0}
+.print-only{display:none}
+@media (max-width:420px){.label-grid{grid-template-columns:1fr}}
+@media print{
+  header.top .lang,nav.tabs,.noprint,#toast,#busy{display:none!important}
+  body{font-size:12px}
+  main{max-width:none;padding:0 4px}
+  .grid .tm,.grid .by{display:block;font-size:8px;line-height:1.1;color:#333}
+  .grid td{height:36px}
+  .gridwrap{overflow:visible;border:0}
+  .grid th.rl,.grid td.rl{position:static}
+  .print-only{display:block}
+  .label-grid{gap:8mm}
+}
+</style>
+<style id="pagecss">@page{size:A4 landscape;margin:10mm}</style>
+</head>
+<body>
+<div id="busy"></div>
+<header class="top">
+  <div class="brand" data-act="home">Mentari<b>Housekeeping</b></div>
+  <div class="tr"><div id="ver"></div><div class="lang" id="lang"></div></div>
+</header>
+<main id="app"></main>
+<div id="nav"></div>
+<div id="toast"></div>
+<div id="layer"></div>
+<script src="config.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="vendor/jsQR.js"></script>
+<script>
+(function () {
+'use strict';
+var VERSION = '1.1.0';
+var CFG = window.HK_CONFIG || {};
+
+/* ===================== translations ===================== */
+var T = {
+en: {
+  call_btn: 'Call housekeeping', call_title: 'Contact housekeeping', call_hk: 'Housekeeping office', call_hr: 'Escalate to HR', call_call: 'Call', call_wa: 'WhatsApp', call_none: 'No contact numbers are set up yet.', call_wa_text: 'Housekeeping concern at {r}: ',
+  home_title: 'Keeping our site clean', home_sub: 'Housekeeping inspections and concerns',
+  btn_report: 'Report a concern', btn_report_sub: 'No login needed', btn_records: 'Room cleaning records', btn_status: 'Check a concern',
+  btn_staff: 'Staff login', btn_staff_open: 'Open staff area', back: 'Back', home: 'Home',
+  room: 'Room', choose_room: 'Choose a room', category: 'Category', choose_cat: 'Choose a category',
+  describe: 'What is the concern?', describe_ph: 'For example: no tissue, floor is wet, bad smell',
+  photo_opt: 'Photo (optional)', take_photo: 'Take or choose photo', change_photo: 'Change photo', remove: 'Remove',
+  your_name: 'Your name (optional)', send: 'Send report', sending: 'Sending…',
+  sent_title: 'Report sent', sent_ref: 'Your reference', sent_note: 'The housekeeping office has been notified. Keep this reference to check progress.',
+  report_another: 'Report another concern', check_status: 'Check status',
+  ref_label: 'Reference number', check: 'Check', status: 'Status', reported_on: 'Reported', updated_on: 'Last update',
+  st_open: 'Open', st_inprogress: 'In progress', st_closed: 'Closed',
+  records_title: 'Room cleaning records', pick_room: 'Choose a room to see this month\u2019s inspection record.',
+  completed: 'Completed', late: 'Late', missed: 'Missed', of: 'of',
+  lg_done: 'On time', lg_late: 'Late', lg_missed: 'Not inspected', lg_due: 'Due now', lg_pending: 'Not yet due', lg_off: 'No round',
+  print: 'Print', report_here: 'Report a concern in this room', staff_login: 'Staff login',
+  scan_note: 'Staff: scan this QR inside the app to start an inspection.',
+  login_title: 'Staff login', who: 'Who are you?', pin: 'PIN', login: 'Log in', logout: 'Log out', choose_name: 'Choose your name',
+  tab_today: 'Today', tab_concerns: 'Concerns', tab_stock: 'Stock', tab_more: 'More',
+  scan_btn: 'Scan room QR', scan_hint: 'Scan the QR code inside the room to start the inspection.',
+  scan_point: 'Point the camera at the room QR code', scan_cancel: 'Cancel', scan_bad: 'This is not a housekeeping room QR code.',
+  cam_fail: 'The camera could not be opened. Allow camera access for this site and try again.', paste_qr: 'Paste QR address (office use)', go: 'Go',
+  due_now: 'Due now', overdue: 'Not inspected', on_track: 'All rounds on track', no_rounds: 'No rounds are scheduled today.', holiday: 'Public holiday',
+  today_progress: 'Rounds inspected today',
+  insp_title: 'Inspection', round: 'Round', extra: 'Extra check (no round credit)', ontime: 'On time', late_badge: 'Late',
+  opt_done: 'Done', opt_notdone: 'Not done', opt_action: 'Needs action', opt_present: 'Present', opt_refill: 'Needs refill', opt_clean: 'Clean', opt_cleaned: 'Dirty, cleaned now',
+  note_ph: 'What is the issue?', photo_req: 'Photo required', photo_for_room: 'Photo of the room', overall_note: 'Overall note (optional)',
+  submit: 'Submit inspection', wait_s: 'Submit in {s}s', answered: '{a} of {n} answered', need_notes: 'Add a note for the red items', saving: 'Saving…',
+  done_title: 'Inspection saved', done_next: 'Scan next room', done_today: 'Back to today', done_concerns: '{n} concern(s) sent to the office',
+  concerns_title: 'Concerns', f_open: 'Open', f_prog: 'In progress', f_closed: 'Closed', none_here: 'Nothing here.',
+  act_start: 'Start work', act_close: 'Close concern', act_reopen: 'Reopen', close_title: 'Close concern', close_note: 'What was done?',
+  after_photo: 'After photo (required)', after_photo_opt: 'After photo (optional)', confirm_close: 'Close concern',
+  from_insp: 'From inspection', from_person: 'From personnel', handled_by: 'Handled by', view_photo: 'View photo', view_after: 'View after photo',
+  stock_title: 'Stock list', snacks: 'Snacks and drinks', other: 'Other requirements', search: 'Search',
+  stock_note: 'This is the current list. Stock counts and updates will be added in the next version.', listed_qty: 'Qty',
+  more_title: 'More', dash: 'Dashboard', labels: 'QR labels', change_pin: 'Change PIN', old_pin: 'Current PIN', new_pin: 'New PIN (4 to 6 digits)', save: 'Save', pin_saved: 'PIN changed',
+  notif_on: 'Turn on phone alerts', notif_done: 'Phone alerts are on', notif_no: 'Alerts are blocked in this browser', signed_as: 'Signed in as',
+  dash_title: 'Dashboard', d_month: 'Completion this month', d_open: 'Open concerns', d_avg: 'Avg. time to close', hours: 'h', d_today: 'Today', d_rooms: 'Rooms this month',
+  d_repeat: 'Repeat locations (this month)', d_fast: 'Inspections finished very close together', d_user: 'Inspections this month', copy_week: 'Copy weekly summary', copied: 'Copied',
+  labels_title: 'QR labels', labels_url: 'App address in the QR codes', labels_note: 'Print and laminate. Stick each label inside its room, away from the door.',
+  label_l1: 'Scan to see the cleaning record or report a concern', label_l2: 'Pindai untuk melihat catatan kebersihan atau melaporkan masalah', label_l3: 'Staff: scan inside the app', label_print: 'Print labels', label_make: 'Update',
+  pop_concern: 'New concern', pop_round: 'Round due', ok: 'OK', retry: 'Try again', loading: 'Loading…',
+  setup_title: 'App not connected yet', setup_text: 'Paste the web app address from Google Apps Script (it ends with /exec).', setup_save: 'Save address',
+  months: 'Month', no_data: 'No data', by: 'by', at: 'at',
+  err_net: 'No connection. Please try again.', err_badpin: 'Wrong PIN.', err_locked: 'Too many wrong PINs. Try again in 10 minutes.',
+  err_early: 'Too early. The next round for this room starts at {t}.', err_dwell: 'Please finish the checklist first. Wait {s} more seconds.',
+  err_auth: 'Please log in again.', err_invalid: 'This could not be done. Please check and try again.', err_notes: 'Add a short note for each item that is not done or needs action.',
+  err_photo: 'A photo is required.', err_dup: 'This round was already recorded.', err_used: 'This inspection was already submitted.', err_expired: 'This inspection timed out. Scan the room again.',
+  err_throttle: 'Too many reports right now. Please tell the office directly.', err_old: 'Older records are available to staff only.', err_notfound: 'Not found.',
+  err_forbidden: 'You are not allowed to do this.', err_server: 'Something went wrong. Please try again.', err_setup: 'The app is not connected yet.'
+},
+id: {
+  call_btn: 'Hubungi housekeeping', call_title: 'Hubungi housekeeping', call_hk: 'Kantor housekeeping', call_hr: 'Eskalasi ke HR', call_call: 'Telepon', call_wa: 'WhatsApp', call_none: 'Nomor kontak belum diatur.', call_wa_text: 'Masalah housekeeping di {r}: ',
+  home_title: 'Menjaga site tetap bersih', home_sub: 'Inspeksi kebersihan dan laporan masalah',
+  btn_report: 'Laporkan masalah', btn_report_sub: 'Tanpa login', btn_records: 'Catatan kebersihan ruangan', btn_status: 'Cek status laporan',
+  btn_staff: 'Login staf', btn_staff_open: 'Buka area staf', back: 'Kembali', home: 'Beranda',
+  room: 'Ruangan', choose_room: 'Pilih ruangan', category: 'Kategori', choose_cat: 'Pilih kategori',
+  describe: 'Apa masalahnya?', describe_ph: 'Contoh: tisu habis, lantai basah, bau tidak sedap',
+  photo_opt: 'Foto (opsional)', take_photo: 'Ambil atau pilih foto', change_photo: 'Ganti foto', remove: 'Hapus',
+  your_name: 'Nama Anda (opsional)', send: 'Kirim laporan', sending: 'Mengirim…',
+  sent_title: 'Laporan terkirim', sent_ref: 'Nomor referensi Anda', sent_note: 'Kantor housekeeping sudah diberi tahu. Simpan nomor ini untuk mengecek perkembangan.',
+  report_another: 'Laporkan masalah lain', check_status: 'Cek status',
+  ref_label: 'Nomor referensi', check: 'Cek', status: 'Status', reported_on: 'Dilaporkan', updated_on: 'Pembaruan terakhir',
+  st_open: 'Terbuka', st_inprogress: 'Sedang dikerjakan', st_closed: 'Selesai',
+  records_title: 'Catatan kebersihan ruangan', pick_room: 'Pilih ruangan untuk melihat catatan inspeksi bulan ini.',
+  completed: 'Selesai', late: 'Terlambat', missed: 'Terlewat', of: 'dari',
+  lg_done: 'Tepat waktu', lg_late: 'Terlambat', lg_missed: 'Tidak diinspeksi', lg_due: 'Waktunya sekarang', lg_pending: 'Belum waktunya', lg_off: 'Tidak ada putaran',
+  print: 'Cetak', report_here: 'Laporkan masalah di ruangan ini', staff_login: 'Login staf',
+  scan_note: 'Staf: pindai QR ini di dalam aplikasi untuk memulai inspeksi.',
+  login_title: 'Login staf', who: 'Siapa Anda?', pin: 'PIN', login: 'Masuk', logout: 'Keluar', choose_name: 'Pilih nama Anda',
+  tab_today: 'Hari ini', tab_concerns: 'Laporan', tab_stock: 'Stok', tab_more: 'Lainnya',
+  scan_btn: 'Scan QR ruangan', scan_hint: 'Scan kode QR di dalam ruangan untuk memulai inspeksi.',
+  scan_point: 'Arahkan kamera ke kode QR ruangan', scan_cancel: 'Batal', scan_bad: 'Ini bukan kode QR ruangan housekeeping.',
+  cam_fail: 'Kamera tidak dapat dibuka. Izinkan akses kamera untuk situs ini lalu coba lagi.', paste_qr: 'Tempel alamat QR (untuk kantor)', go: 'Lanjut',
+  due_now: 'Waktunya sekarang', overdue: 'Belum diinspeksi', on_track: 'Semua putaran sesuai jadwal', no_rounds: 'Tidak ada putaran terjadwal hari ini.', holiday: 'Hari libur',
+  today_progress: 'Putaran selesai hari ini',
+  insp_title: 'Inspeksi', round: 'Putaran', extra: 'Pengecekan tambahan (tidak dihitung)', ontime: 'Tepat waktu', late_badge: 'Terlambat',
+  opt_done: 'Selesai', opt_notdone: 'Belum', opt_action: 'Perlu tindakan', opt_present: 'Ada', opt_refill: 'Perlu isi ulang', opt_clean: 'Bersih', opt_cleaned: 'Kotor, sudah dibersihkan',
+  note_ph: 'Apa masalahnya?', photo_req: 'Foto wajib', photo_for_room: 'Foto ruangan', overall_note: 'Catatan umum (opsional)',
+  submit: 'Kirim inspeksi', wait_s: 'Kirim dalam {s} dtk', answered: '{a} dari {n} terjawab', need_notes: 'Tambahkan catatan untuk item merah', saving: 'Menyimpan…',
+  done_title: 'Inspeksi tersimpan', done_next: 'Scan ruangan berikutnya', done_today: 'Kembali ke hari ini', done_concerns: '{n} laporan dikirim ke kantor',
+  concerns_title: 'Laporan', f_open: 'Terbuka', f_prog: 'Dikerjakan', f_closed: 'Selesai', none_here: 'Tidak ada.',
+  act_start: 'Mulai kerja', act_close: 'Selesaikan laporan', act_reopen: 'Buka kembali', close_title: 'Selesaikan laporan', close_note: 'Apa yang sudah dilakukan?',
+  after_photo: 'Foto sesudah (wajib)', after_photo_opt: 'Foto sesudah (opsional)', confirm_close: 'Selesaikan laporan',
+  from_insp: 'Dari inspeksi', from_person: 'Dari personel', handled_by: 'Ditangani oleh', view_photo: 'Lihat foto', view_after: 'Lihat foto sesudah',
+  stock_title: 'Daftar stok', snacks: 'Snack dan minuman', other: 'Kebutuhan lainnya', search: 'Cari',
+  stock_note: 'Ini daftar saat ini. Hitung stok dan pembaruan stok akan ditambahkan di versi berikutnya.', listed_qty: 'Jml',
+  more_title: 'Lainnya', dash: 'Dasbor', labels: 'Label QR', change_pin: 'Ganti PIN', old_pin: 'PIN saat ini', new_pin: 'PIN baru (4 sampai 6 angka)', save: 'Simpan', pin_saved: 'PIN diganti',
+  notif_on: 'Aktifkan notifikasi ponsel', notif_done: 'Notifikasi ponsel aktif', notif_no: 'Notifikasi diblokir di browser ini', signed_as: 'Masuk sebagai',
+  dash_title: 'Dasbor', d_month: 'Penyelesaian bulan ini', d_open: 'Laporan terbuka', d_avg: 'Rata-rata waktu selesai', hours: 'j', d_today: 'Hari ini', d_rooms: 'Ruangan bulan ini',
+  d_repeat: 'Lokasi berulang (bulan ini)', d_fast: 'Inspeksi selesai sangat berdekatan', d_user: 'Inspeksi bulan ini', copy_week: 'Salin ringkasan mingguan', copied: 'Tersalin',
+  labels_title: 'Label QR', labels_url: 'Alamat aplikasi di kode QR', labels_note: 'Cetak dan laminasi. Tempel tiap label di dalam ruangannya, jauh dari pintu.',
+  label_l1: 'Scan to see the cleaning record or report a concern', label_l2: 'Pindai untuk melihat catatan kebersihan atau melaporkan masalah', label_l3: 'Staf: scan di dalam aplikasi', label_print: 'Cetak label', label_make: 'Perbarui',
+  pop_concern: 'Laporan baru', pop_round: 'Waktunya putaran', ok: 'OK', retry: 'Coba lagi', loading: 'Memuat…',
+  setup_title: 'Aplikasi belum terhubung', setup_text: 'Tempel alamat web app dari Google Apps Script (berakhiran /exec).', setup_save: 'Simpan alamat',
+  months: 'Bulan', no_data: 'Tidak ada data', by: 'oleh', at: 'pukul',
+  err_net: 'Tidak ada koneksi. Silakan coba lagi.', err_badpin: 'PIN salah.', err_locked: 'Terlalu banyak PIN salah. Coba lagi dalam 10 menit.',
+  err_early: 'Terlalu awal. Putaran berikutnya untuk ruangan ini dimulai pukul {t}.', err_dwell: 'Selesaikan daftar periksa dulu. Tunggu {s} detik lagi.',
+  err_auth: 'Silakan login kembali.', err_invalid: 'Tidak dapat diproses. Periksa lalu coba lagi.', err_notes: 'Tambahkan catatan singkat untuk setiap item yang belum selesai atau perlu tindakan.',
+  err_photo: 'Foto wajib.', err_dup: 'Putaran ini sudah tercatat.', err_used: 'Inspeksi ini sudah dikirim.', err_expired: 'Inspeksi kedaluwarsa. Scan ruangan lagi.',
+  err_throttle: 'Terlalu banyak laporan saat ini. Silakan beri tahu kantor langsung.', err_old: 'Catatan lama hanya untuk staf.', err_notfound: 'Tidak ditemukan.',
+  err_forbidden: 'Anda tidak diizinkan melakukan ini.', err_server: 'Terjadi kesalahan. Silakan coba lagi.', err_setup: 'Aplikasi belum terhubung.'
+},
+ms: {
+  call_btn: 'Hubungi housekeeping', call_title: 'Hubungi housekeeping', call_hk: 'Pejabat housekeeping', call_hr: 'Eskalasi kepada HR', call_call: 'Telefon', call_wa: 'WhatsApp', call_none: 'Nombor hubungan belum ditetapkan.', call_wa_text: 'Isu housekeeping di {r}: ',
+  home_title: 'Memastikan tapak kekal bersih', home_sub: 'Pemeriksaan kebersihan dan aduan',
+  btn_report: 'Lapor masalah', btn_report_sub: 'Tanpa log masuk', btn_records: 'Rekod kebersihan bilik', btn_status: 'Semak status aduan',
+  btn_staff: 'Log masuk staf', btn_staff_open: 'Buka kawasan staf', back: 'Kembali', home: 'Utama',
+  room: 'Bilik', choose_room: 'Pilih bilik', category: 'Kategori', choose_cat: 'Pilih kategori',
+  describe: 'Apakah masalahnya?', describe_ph: 'Contoh: tisu habis, lantai basah, bau busuk',
+  photo_opt: 'Foto (pilihan)', take_photo: 'Ambil atau pilih foto', change_photo: 'Tukar foto', remove: 'Buang',
+  your_name: 'Nama anda (pilihan)', send: 'Hantar laporan', sending: 'Menghantar…',
+  sent_title: 'Laporan dihantar', sent_ref: 'Rujukan anda', sent_note: 'Pejabat housekeeping telah dimaklumkan. Simpan rujukan ini untuk menyemak perkembangan.',
+  report_another: 'Lapor masalah lain', check_status: 'Semak status',
+  ref_label: 'Nombor rujukan', check: 'Semak', status: 'Status', reported_on: 'Dilaporkan', updated_on: 'Kemas kini terakhir',
+  st_open: 'Terbuka', st_inprogress: 'Sedang dibuat', st_closed: 'Selesai',
+  records_title: 'Rekod kebersihan bilik', pick_room: 'Pilih bilik untuk melihat rekod pemeriksaan bulan ini.',
+  completed: 'Selesai', late: 'Lewat', missed: 'Terlepas', of: 'daripada',
+  lg_done: 'Tepat masa', lg_late: 'Lewat', lg_missed: 'Tidak diperiksa', lg_due: 'Tiba masanya', lg_pending: 'Belum tiba masa', lg_off: 'Tiada pusingan',
+  print: 'Cetak', report_here: 'Lapor masalah di bilik ini', staff_login: 'Log masuk staf',
+  scan_note: 'Staf: imbas QR ini dalam aplikasi untuk memulakan pemeriksaan.',
+  login_title: 'Log masuk staf', who: 'Siapa anda?', pin: 'PIN', login: 'Log masuk', logout: 'Log keluar', choose_name: 'Pilih nama anda',
+  tab_today: 'Hari ini', tab_concerns: 'Aduan', tab_stock: 'Stok', tab_more: 'Lagi',
+  scan_btn: 'Imbas QR bilik', scan_hint: 'Imbas kod QR di dalam bilik untuk memulakan pemeriksaan.',
+  scan_point: 'Halakan kamera ke kod QR bilik', scan_cancel: 'Batal', scan_bad: 'Ini bukan kod QR bilik housekeeping.',
+  cam_fail: 'Kamera tidak dapat dibuka. Benarkan akses kamera untuk laman ini dan cuba lagi.', paste_qr: 'Tampal alamat QR (kegunaan pejabat)', go: 'Teruskan',
+  due_now: 'Tiba masanya', overdue: 'Belum diperiksa', on_track: 'Semua pusingan mengikut jadual', no_rounds: 'Tiada pusingan dijadualkan hari ini.', holiday: 'Cuti umum',
+  today_progress: 'Pusingan diperiksa hari ini',
+  insp_title: 'Pemeriksaan', round: 'Pusingan', extra: 'Semakan tambahan (tidak dikira)', ontime: 'Tepat masa', late_badge: 'Lewat',
+  opt_done: 'Siap', opt_notdone: 'Belum', opt_action: 'Perlu tindakan', opt_present: 'Ada', opt_refill: 'Perlu diisi semula', opt_clean: 'Bersih', opt_cleaned: 'Kotor, sudah dibersihkan',
+  note_ph: 'Apakah masalahnya?', photo_req: 'Foto diperlukan', photo_for_room: 'Foto bilik', overall_note: 'Catatan am (pilihan)',
+  submit: 'Hantar pemeriksaan', wait_s: 'Hantar dalam {s}s', answered: '{a} daripada {n} dijawab', need_notes: 'Tambah catatan untuk item merah', saving: 'Menyimpan…',
+  done_title: 'Pemeriksaan disimpan', done_next: 'Imbas bilik seterusnya', done_today: 'Kembali ke hari ini', done_concerns: '{n} aduan dihantar ke pejabat',
+  concerns_title: 'Aduan', f_open: 'Terbuka', f_prog: 'Sedang dibuat', f_closed: 'Selesai', none_here: 'Tiada.',
+  act_start: 'Mula kerja', act_close: 'Tutup aduan', act_reopen: 'Buka semula', close_title: 'Tutup aduan', close_note: 'Apa yang telah dibuat?',
+  after_photo: 'Foto selepas (diperlukan)', after_photo_opt: 'Foto selepas (pilihan)', confirm_close: 'Tutup aduan',
+  from_insp: 'Daripada pemeriksaan', from_person: 'Daripada kakitangan', handled_by: 'Dikendalikan oleh', view_photo: 'Lihat foto', view_after: 'Lihat foto selepas',
+  stock_title: 'Senarai stok', snacks: 'Snek dan minuman', other: 'Keperluan lain', search: 'Cari',
+  stock_note: 'Ini senarai semasa. Kiraan stok dan kemas kini stok akan ditambah dalam versi akan datang.', listed_qty: 'Kuantiti',
+  more_title: 'Lagi', dash: 'Papan pemuka', labels: 'Label QR', change_pin: 'Tukar PIN', old_pin: 'PIN semasa', new_pin: 'PIN baharu (4 hingga 6 digit)', save: 'Simpan', pin_saved: 'PIN ditukar',
+  notif_on: 'Hidupkan makluman telefon', notif_done: 'Makluman telefon aktif', notif_no: 'Makluman disekat dalam pelayar ini', signed_as: 'Log masuk sebagai',
+  dash_title: 'Papan pemuka', d_month: 'Penyiapan bulan ini', d_open: 'Aduan terbuka', d_avg: 'Purata masa selesai', hours: 'j', d_today: 'Hari ini', d_rooms: 'Bilik bulan ini',
+  d_repeat: 'Lokasi berulang (bulan ini)', d_fast: 'Pemeriksaan siap sangat rapat', d_user: 'Pemeriksaan bulan ini', copy_week: 'Salin ringkasan mingguan', copied: 'Disalin',
+  labels_title: 'Label QR', labels_url: 'Alamat aplikasi dalam kod QR', labels_note: 'Cetak dan laminat. Lekatkan setiap label di dalam biliknya, jauh dari pintu.',
+  label_l1: 'Scan to see the cleaning record or report a concern', label_l2: 'Pindai untuk melihat catatan kebersihan atau melaporkan masalah', label_l3: 'Staf: imbas dalam aplikasi', label_print: 'Cetak label', label_make: 'Kemas kini',
+  pop_concern: 'Aduan baharu', pop_round: 'Pusingan tiba masa', ok: 'OK', retry: 'Cuba lagi', loading: 'Memuatkan…',
+  setup_title: 'Aplikasi belum disambungkan', setup_text: 'Tampal alamat web app daripada Google Apps Script (berakhir dengan /exec).', setup_save: 'Simpan alamat',
+  months: 'Bulan', no_data: 'Tiada data', by: 'oleh', at: 'pada',
+  err_net: 'Tiada sambungan. Sila cuba lagi.', err_badpin: 'PIN salah.', err_locked: 'Terlalu banyak PIN salah. Cuba lagi dalam 10 minit.',
+  err_early: 'Terlalu awal. Pusingan seterusnya untuk bilik ini bermula pada {t}.', err_dwell: 'Sila siapkan senarai semak dahulu. Tunggu {s} saat lagi.',
+  err_auth: 'Sila log masuk semula.', err_invalid: 'Tidak dapat diproses. Sila semak dan cuba lagi.', err_notes: 'Tambah catatan ringkas untuk setiap item yang belum siap atau perlu tindakan.',
+  err_photo: 'Foto diperlukan.', err_dup: 'Pusingan ini telah direkodkan.', err_used: 'Pemeriksaan ini telah dihantar.', err_expired: 'Pemeriksaan tamat masa. Imbas bilik semula.',
+  err_throttle: 'Terlalu banyak laporan sekarang. Sila maklumkan pejabat terus.', err_old: 'Rekod lama hanya untuk staf.', err_notfound: 'Tidak dijumpai.',
+  err_forbidden: 'Anda tidak dibenarkan melakukan ini.', err_server: 'Sesuatu tidak kena. Sila cuba lagi.', err_setup: 'Aplikasi belum disambungkan.'
+}
+};
+var LOC = { en: 'en-GB', id: 'id-ID', ms: 'ms-MY' };
+
+/* ===================== helpers ===================== */
+var $ = function (s, el) { return (el || document).querySelector(s); };
+var $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} return null; }
+function detectLang() {
+  var s = ls('hk_lang'); if (s && T[s]) return s;
+  var n = (navigator.language || 'en').toLowerCase();
+  return n.indexOf('id') === 0 ? 'id' : n.indexOf('ms') === 0 ? 'ms' : 'en';
+}
+var S = { lang: detectLang(), cfg: null, token: ls('hk_token'), user: null, view: 'home', params: {}, rtok: 0, ins: null, done: null, pulse: null, cache: {} };
+try { S.user = JSON.parse(ls('hk_user') || 'null'); } catch (e) { S.user = null; }
+if (!S.token) S.user = null;
+var API_URL = CFG.API_URL || ls('hk_api') || '';
+
+function t(k, v) {
+  var s = (T[S.lang] && T[S.lang][k]) || T.en[k] || k;
+  if (v) Object.keys(v).forEach(function (x) { s = s.replace('{' + x + '}', v[x]); });
+  return s;
+}
+function L() { return { en: 'En', id: 'Id', ms: 'Ms' }[S.lang]; }
+function nm(o) { return (o && (o['name' + L()] || o.nameEn)) || ''; }
+function isMgr() { return S.user && (S.user.role === 'supervisor' || S.user.role === 'admin'); }
+function monthName(ym) { return new Date(+ym.slice(0, 4), +ym.slice(5, 7) - 1, 1).toLocaleDateString(LOC[S.lang], { month: 'long', year: 'numeric' }); }
+function dt(s) {
+  if (!s) return '';
+  var d = new Date(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+  return d.toLocaleDateString(LOC[S.lang], { day: 'numeric', month: 'short' }) + ' ' + s.slice(11, 16);
+}
+function stKey(s) { return s === 'Open' ? 'open' : s === 'In Progress' ? 'inprogress' : 'closed'; }
+function stName(s) { return t('st_' + stKey(s)); }
+function catName(id) {
+  var c = ((S.cfg && S.cfg.categories) || []).filter(function (x) { return x.id === id; })[0];
+  if (id === 'action') return { en: 'Needs action (inspection)', id: 'Perlu tindakan (inspeksi)', ms: 'Perlu tindakan (pemeriksaan)' }[S.lang];
+  if (!c) return id;
+  return S.lang === 'id' ? c.id_ : S.lang === 'ms' ? c.ms : c.en;
+}
+function toast(msg) {
+  var el = $('#toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove('show'); }, 2600);
+}
+function errMsg(e) {
+  if (!e) return t('err_server');
+  var code = e.code || 'server', m = e.error || e.message || '', v = {};
+  var tm = /(\d\d:\d\d)/.exec(m); if (tm) v.t = tm[1];
+  var sc = /(\d+) more seconds/.exec(m); if (sc) v.s = sc[1];
+  var key = 'err_' + code;
+  return T[S.lang][key] ? t(key, v) : (m || t('err_server'));
+}
+
+/* ===================== api ===================== */
+var busy = 0;
+function setBusy(d) { busy += d; document.body.classList.toggle('busy', busy > 0); }
+async function api(action, data) {
+  if (!API_URL) throw { code: 'setup' };
+  var body = JSON.stringify(Object.assign({ action: action, token: S.token || undefined }, data || {}));
+  var j;
+  setBusy(1);
+  try {
+    var r = await fetch(API_URL, { method: 'POST', body: body, redirect: 'follow' });
+    j = await r.json();
+  } catch (e) { throw { code: 'net' }; } finally { setBusy(-1); }
+  if (!j || !j.ok) {
+    if (j && j.code === 'auth' && S.token) { clearSession(); }
+    throw j || { code: 'server' };
+  }
+  return j;
+}
+function clearSession() { S.token = null; S.user = null; ls('hk_token', null); ls('hk_user', null); stopPulse(); }
+async function ensureCfg() {
+  if (S.cfg) return S.cfg;
+  var c = await api('config'); S.cfg = c; return c;
+}
+
+/* ===================== photos ===================== */
+function shrink(file, max, q) {
+  return new Promise(function (res, rej) {
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function () {
+      var w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, (max || 1280) / Math.max(w, h));
+      var c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', q || 0.72));
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('img')); };
+    img.src = url;
+  });
+}
+function pickPhoto(live, cb) {
+  var inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+  if (live) inp.setAttribute('capture', 'environment');
+  inp.style.display = 'none'; document.body.appendChild(inp);
+  inp.onchange = async function () {
+    var f = inp.files && inp.files[0]; document.body.removeChild(inp);
+    if (!f) return;
+    try { cb(await shrink(f)); } catch (e) { toast(t('err_invalid')); }
+  };
+  inp.click();
+}
+
+/* ===================== sound + alerts ===================== */
+var actx = null;
+function unlockAudio() { try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) {} }
+function beep() {
+  try {
+    if (!actx) return;
+    [0, 0.28].forEach(function (d) {
+      var o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.value = 880; g.gain.value = 0.2;
+      o.connect(g); g.connect(actx.destination); o.start(actx.currentTime + d); o.stop(actx.currentTime + d + 0.18);
+    });
+  } catch (e) {}
+  try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e2) {}
+}
+function sysNotify(title, body) {
+  try {
+    if (!('Notification' in window) || Notification.permission !== 'granted' || !document.hidden) return;
+    if (navigator.serviceWorker && navigator.serviceWorker.ready) navigator.serviceWorker.ready.then(function (r) { r.showNotification(title, { body: body, icon: 'icons/icon-192.png', tag: 'hk-' + title }); });
+  } catch (e) {}
+}
+function modal(html) { $('#layer').innerHTML = '<div class="modal" data-act="mclose"><div class="box" data-stop="1">' + html + '</div></div>'; }
+function closeModal() { $('#layer').innerHTML = ''; }
+function popup(title, lines) {
+  beep(); sysNotify(title, lines.join('\n'));
+  modal('<h3>' + esc(title) + '</h3>' + lines.map(function (l) { return '<p>' + esc(l) + '</p>'; }).join('') + '<button class="btn p c" data-act="mclose" style="margin-top:12px">' + t('ok') + '</button>');
+}
+
+/* ===================== pulse (pop-ups while the app is open) ===================== */
+var pulseTimer = null;
+function startPulse() { stopPulse(); if (!S.token) return; doPulse(); pulseTimer = setInterval(doPulse, 45000); }
+function stopPulse() { if (pulseTimer) clearInterval(pulseTimer); pulseTimer = null; }
+async function doPulse() {
+  if (!S.token || document.hidden) return;
+  try {
+    var first = !ls('hk_since');
+    var p = await api('pulse', { since: ls('hk_since') || '' });
+    S.pulse = p; ls('hk_since', p.now);
+    updateNav();
+    if (!first) {
+      if (p.fresh && p.fresh.length) popup(t('pop_concern'), p.fresh.slice(0, 4).map(function (c) { return nm(c.room) + ': ' + (c.text || '').slice(0, 80); }));
+      else (p.due || []).forEach(function (d) {
+        var k = 'hk_due_' + p.now.slice(0, 10) + '_' + d.roundId;
+        if (ls(k)) return; ls(k, '1');
+        popup(t('pop_round'), [(S.lang === 'id' ? d.nameId : S.lang === 'ms' ? d.nameMs : d.nameEn) + ' ' + d.start + ' - ' + d.end, d.rooms.length + ' ' + t('room').toLowerCase()]);
+      });
+    }
+    if (S.view === 'staff' && S.params.tab === 'today' && !$('#layer').innerHTML) refreshTodayQuiet();
+  } catch (e) { /* silent */ }
+}
+
+/* ===================== shell: header, nav, routing ===================== */
+var VIEWS = {}, ACT = {}, INP = {};
+function setApp(h) { $('#app').innerHTML = h; }
+function renderHeader() {
+  $('#ver').textContent = 'v' + VERSION;
+  $('#lang').innerHTML = ['en', 'id', 'ms'].map(function (l) { return '<button data-act="lang" data-l="' + l + '" class="' + (S.lang === l ? 'on' : '') + '">' + l.toUpperCase() + '</button>'; }).join('');
+  document.documentElement.lang = S.lang;
+}
+function updateNav() {
+  var n = $('#nav');
+  if (S.view !== 'staff' || !S.user) { n.innerHTML = ''; return; }
+  var tabs = [['today', 'tab_today'], ['concerns', 'tab_concerns'], ['stock', 'tab_stock'], ['more', 'tab_more']];
+  var open = S.pulse ? S.pulse.openConcerns : 0;
+  n.innerHTML = '<nav class="tabs">' + tabs.map(function (x) {
+    return '<button data-act="tab" data-tab="' + x[0] + '" class="' + (S.params.tab === x[0] ? 'on' : '') + '">' + t(x[1]) + (x[0] === 'concerns' && open ? '<span class="badge">' + open + '</span>' : '') + '</button>';
+  }).join('') + '</nav>';
+}
+function initialRoute() {
+  var q = new URLSearchParams(location.search), room = q.get('room');
+  if (room) return { view: 'room', params: { roomId: room } };
+  if (S.user && S.token) return { view: 'staff', params: { tab: 'today' } };
+  return { view: 'home', params: {} };
+}
+function go(view, params, replace) {
+  S.view = view; S.params = params || {};
+  try { var st = { view: S.view, params: S.params }; if (replace) history.replaceState(st, ''); else history.pushState(st, ''); } catch (e) {}
+  render(); window.scrollTo(0, 0);
+}
+window.addEventListener('popstate', function (e) {
+  var st = e.state;
+  if (st && st.view) { S.view = st.view; S.params = st.params || {}; } else { var i = initialRoute(); S.view = i.view; S.params = i.params; }
+  render();
+});
+var cleanups = [];
+function cleanup() { cleanups.forEach(function (f) { try { f(); } catch (e) {} }); cleanups = []; closeModal(); }
+async function render() {
+  cleanup(); renderHeader();
+  var tok = ++S.rtok, f = VIEWS[S.view] || VIEWS.home;
+  $('#app').className = S.view === 'staff' ? 'hasTabs' : '';
+  $('#pagecss').textContent = S.view === 'labels' ? '@page{size:A4 portrait;margin:10mm}' : '@page{size:A4 landscape;margin:10mm}';
+  updateNav();
+  try { await f(tok); } catch (e) { if (tok === S.rtok) showErr(e); }
+}
+function showErr(e) {
+  if (e && e.code === 'setup') { VIEWS.setup(); return; }
+  if (e && e.code === 'auth' && S.view !== 'login' && S.view !== 'home' && S.view !== 'room') { S.params = {}; S.view = 'login'; render(); return; }
+  setApp('<h1 class="title">' + t('retry') + '</h1><div class="banner bad">' + esc(errMsg(e)) + '</div><button class="btn c" data-act="retry">' + t('retry') + '</button>');
+}
+function backBtn(to) { return '<button class="link noprint" data-act="back">← ' + t('back') + '</button>'; }
+
+/* ===================== setup (no API address yet) ===================== */
+VIEWS.setup = function () {
+  setApp('<h1 class="title">' + t('setup_title') + '</h1><p>' + t('setup_text') + '</p><label>URL</label><input id="apiurl" placeholder="https://script.google.com/macros/s/…/exec" value="' + esc(API_URL) + '"><p><button class="btn p c" data-act="saveapi">' + t('setup_save') + '</button></p>');
+};
+ACT.saveapi = function () { var v = ($('#apiurl').value || '').trim(); if (!/^https:\/\/script\.google\.com\/.+\/exec$/.test(v) && !/^https?:\/\/localhost/.test(v)) { toast('URL?'); return; } ls('hk_api', v); API_URL = v; S.cfg = null; go('home', {}, true); };
+
+/* ===================== public: home, records, room ===================== */
+VIEWS.home = async function (tok) {
+  await ensureCfg();
+  if (tok !== S.rtok) return;
+  setApp('<h1 class="title">' + t('home_title') + '</h1><p class="sub">' + t('home_sub') + '</p><div class="stack">' +
+    '<button class="btn p" data-act="go" data-v="report">' + t('btn_report') + '<small>' + t('btn_report_sub') + '</small></button>' +
+    '<button class="btn" data-act="go" data-v="records">' + t('btn_records') + '</button>' +
+    '<button class="btn" data-act="go" data-v="status">' + t('btn_status') + '</button>' +
+    '<button class="btn" data-act="call">' + t('call_btn') + '</button>' +
+    '<button class="btn" data-act="staff">' + (S.user ? t('btn_staff_open') : t('btn_staff')) + '</button></div>');
+};
+function roomOptions(cfg, sel) {
+  var groups = {};
+  cfg.rooms.forEach(function (r) { (groups[r.location] = groups[r.location] || []).push(r); });
+  return Object.keys(groups).map(function (g) {
+    return '<optgroup label="' + esc(g) + '">' + groups[g].map(function (r) { return '<option value="' + esc(r.roomId) + '"' + (r.roomId === sel ? ' selected' : '') + '>' + esc(nm(r)) + '</option>'; }).join('') + '</optgroup>';
+  }).join('');
+}
+VIEWS.records = async function (tok) {
+  var cfg = await ensureCfg(); if (tok !== S.rtok) return;
+  var groups = {};
+  cfg.rooms.forEach(function (r) { (groups[r.location] = groups[r.location] || []).push(r); });
+  setApp(backBtn() + '<h1 class="title">' + t('records_title') + '</h1><p class="sub">' + t('pick_room') + '</p>' +
+    Object.keys(groups).map(function (g) {
+      return '<h2>' + esc(g) + '</h2><div class="stack">' + groups[g].map(function (r) { return '<button class="btn" data-act="room" data-id="' + esc(r.roomId) + '">' + esc(nm(r)) + '</button>'; }).join('') + '</div>';
+    }).join(''));
+};
+function roundName(r) { return S.lang === 'id' ? r.nameId : S.lang === 'ms' ? r.nameMs : r.nameEn; }
+VIEWS.room = async function (tok) {
+  var cfg = await ensureCfg(); if (tok !== S.rtok) return;
+  var p = S.params, room = cfg.rooms.filter(function (r) { return r.roomId === p.roomId; })[0];
+  if (!room) { setApp('<div class="banner bad">' + t('err_notfound') + '</div><button class="btn c" data-act="home">' + t('home') + '</button>'); return; }
+  var month = p.month || cfg.today.slice(0, 7);
+  setApp('<p class="muted">' + t('loading') + '</p>');
+  var d;
+  try { d = await api('roomMonth', { roomId: room.roomId, month: month }); }
+  catch (e) { if (e && e.code === 'old' && p.month) { toast(errMsg(e)); S.params.month = cfg.today.slice(0, 7); return render(); } throw e; }
+  if (tok !== S.rtok) return;
+  S.roomData = d;
+  var curM = cfg.today.slice(0, 7), todayD = +cfg.today.slice(8, 10);
+  var head = '<tr><th class="rl">' + esc(t('round')) + '</th>' + d.days.map(function (x) { return '<th class="' + (month === curM && x.d === todayD ? 'today' : '') + '">' + x.d + '</th>'; }).join('') + '</tr>';
+  var body = d.rounds.map(function (r) {
+    return '<tr><td class="rl">' + esc(roundName(r)) + '<small>' + r.start + ' – ' + r.end + '</small></td>' + d.days.map(function (x) {
+      var c = x.cells[r.roundId];
+      if (!c) return '<td class="c-off"></td>';
+      var sym = c.s === 'done' || c.s === 'late' ? '✓' : c.s === 'missed' ? '✗' : c.s === 'due' ? '•' : '';
+      return '<td class="c-' + c.s + '" data-act="cell" data-d="' + x.d + '" data-r="' + esc(r.roundId) + '">' + sym + (c.t ? '<span class="tm">' + c.t + '</span>' : '') + (c.by ? '<span class="by">' + esc(c.by) + '</span>' : '') + '</td>';
+    }).join('') + '</tr>';
+  }).join('');
+  var tot = d.totals;
+  setApp(backBtn() + '<h1 class="title">' + esc(nm(room)) + '</h1>' +
+    '<div class="row noprint"><button class="btn s" data-act="month" data-d="-1">←</button><b>' + esc(monthName(month)) + '</b><button class="btn s" data-act="month" data-d="1"' + (month >= curM ? ' disabled' : '') + '>→</button></div>' +
+    '<div class="print-only"><b>Mentari Housekeeping</b> · ' + esc(nm(room)) + ' · ' + esc(monthName(month)) + '</div>' +
+    '<div class="stats"><div class="stat"><b>' + (tot.pct === null ? '–' : tot.pct + '%') + '</b><span>' + t('completed') + '</span></div><div class="stat"><b>' + tot.done + '/' + tot.due + '</b><span>' + t('completed') + ' ' + t('of') + '</span></div><div class="stat"><b>' + tot.late + ' · ' + tot.missed + '</b><span>' + t('late') + ' · ' + t('missed') + '</span></div></div>' +
+    '<div class="gridwrap"><table class="grid"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div>' +
+    '<div id="cellinfo" class="muted" style="min-height:22px;margin-top:6px"></div>' +
+    '<div class="legend"><span><i style="background:#c8e6c9"></i>' + t('lg_done') + '</span><span><i style="background:#ffe0b2"></i>' + t('lg_late') + '</span><span><i style="background:#ffcdd2"></i>' + t('lg_missed') + '</span><span><i style="background:#fff59d"></i>' + t('lg_due') + '</span><span><i style="background:#fff"></i>' + t('lg_pending') + '</span><span><i style="background:repeating-linear-gradient(45deg,#f1f1ee,#f1f1ee 3px,#fafaf8 3px,#fafaf8 6px)"></i>' + t('lg_off') + '</span></div>' +
+    '<div class="stack noprint"><button class="btn p" data-act="reportroom" data-id="' + esc(room.roomId) + '">' + t('report_here') + '</button>' +
+    '<button class="btn" data-act="call" data-room="' + esc(room.roomId) + '">' + t('call_btn') + '</button>' +
+    '<button class="btn c" data-act="print">' + t('print') + '</button>' +
+    '<button class="btn c" data-act="staff">' + (S.user ? t('btn_staff_open') : t('staff_login')) + '</button>' +
+    '<p class="muted">' + t('scan_note') + '</p></div>');
+};
+ACT.room = function (el) { go('room', { roomId: el.dataset.id }); };
+ACT.month = function (el) {
+  var m = S.params.month || S.cfg.today.slice(0, 7), y = +m.slice(0, 4), mo = +m.slice(5, 7) + (+el.dataset.d);
+  if (mo < 1) { mo = 12; y--; } if (mo > 12) { mo = 1; y++; }
+  S.params.month = y + '-' + ('0' + mo).slice(-2); render();
+};
+ACT.cell = function (el) {
+  var d = S.roomData; if (!d) return;
+  var day = d.days[+el.dataset.d - 1], c = day.cells[el.dataset.r];
+  var lab = { done: t('lg_done'), late: t('lg_late'), missed: t('lg_missed'), due: t('lg_due'), pending: t('lg_pending') }[c.s];
+  $('#cellinfo').textContent = d.month + '-' + ('0' + day.d).slice(-2) + ' · ' + lab + (c.t ? ' · ' + c.t : '') + (c.by ? ' · ' + c.by : '');
+};
+ACT.print = function () { window.print(); };
+ACT.reportroom = function (el) { S.rep = { roomId: el.dataset.id }; go('report'); };
+
+/* ===================== public: report a concern ===================== */
+VIEWS.report = async function (tok) {
+  var cfg = await ensureCfg(); if (tok !== S.rtok) return;
+  var r = S.rep = S.rep || {};
+  setApp(backBtn() + '<h1 class="title">' + t('btn_report') + '</h1>' +
+    '<label>' + t('room') + '</label><select id="rep_room" data-in="reproom"><option value="">' + t('choose_room') + '</option>' + roomOptions(cfg, r.roomId) + '</select>' +
+    '<label>' + t('category') + '</label><select id="rep_cat" data-in="repcat"><option value="">' + t('choose_cat') + '</option>' + cfg.categories.map(function (c) { return '<option value="' + c.id + '"' + (r.category === c.id ? ' selected' : '') + '>' + esc(catName(c.id)) + '</option>'; }).join('') + '</select>' +
+    '<label>' + t('describe') + '</label><textarea id="rep_text" maxlength="500" placeholder="' + esc(t('describe_ph')) + '" data-in="reptext">' + esc(r.text || '') + '</textarea>' +
+    '<label>' + t('photo_opt') + '</label><div id="rep_photo"></div>' +
+    '<label>' + t('your_name') + '</label><input id="rep_name" maxlength="40" data-in="repname" value="' + esc(r.name || '') + '" autocomplete="off">' +
+    '<div class="hp"><input id="hp" tabindex="-1" autocomplete="off" name="website"></div>' +
+    '<p><button class="btn p c" id="rep_send" data-act="repsend">' + t('send') + '</button></p>');
+  drawPhoto('rep_photo', r.photo, false, function (v) { r.photo = v; });
+};
+function drawPhoto(id, val, live, set) {
+  var el = $('#' + id); if (!el) return;
+  el.innerHTML = (val ? '<img class="preview" src="' + val + '" alt="">' : '') +
+    '<div class="wrap" style="margin-top:8px"><button class="btn s" data-photo="1">' + (val ? t('change_photo') : t('take_photo')) + '</button>' + (val ? '<button class="btn s" data-unphoto="1">' + t('remove') + '</button>' : '') + '</div>';
+  el.querySelector('[data-photo]').onclick = function () { unlockAudio(); pickPhoto(live, function (v) { set(v); drawPhoto(id, v, live, set); }); };
+  var u = el.querySelector('[data-unphoto]'); if (u) u.onclick = function () { set(null); drawPhoto(id, null, live, set); };
+}
+INP.reproom = function (el) { S.rep.roomId = el.value; };
+INP.repcat = function (el) { S.rep.category = el.value; };
+INP.reptext = function (el) { S.rep.text = el.value; };
+INP.repname = function (el) { S.rep.name = el.value; };
+ACT.repsend = async function (el) {
+  var r = S.rep || {};
+  if (!r.roomId) { toast(t('choose_room')); return; }
+  if (!r.category) { toast(t('choose_cat')); return; }
+  if (!r.text || r.text.trim().length < 3) { toast(t('describe')); return; }
+  el.disabled = true; el.textContent = t('sending');
+  try {
+    var j = await api('concernCreate', { roomId: r.roomId, category: r.category, text: r.text, name: r.name, photo: r.photo || undefined, website: $('#hp').value });
+    S.rep = null; go('sent', { ref: j.ref }, true);
+  } catch (e) { toast(errMsg(e)); el.disabled = false; el.textContent = t('send'); }
+};
+VIEWS.sent = function () {
+  setApp('<h1 class="title">' + t('sent_title') + '</h1><div class="banner ok">' + t('sent_note') + '</div><p class="muted">' + t('sent_ref') + '</p><p style="font-size:30px;letter-spacing:.12em;font-weight:500;margin:0">' + esc(S.params.ref) + '</p>' +
+    '<div class="stack"><button class="btn" data-act="gostatus" data-ref="' + esc(S.params.ref) + '">' + t('check_status') + '</button><button class="btn" data-act="reportagain">' + t('report_another') + '</button><button class="btn c" data-act="home">' + t('home') + '</button></div>');
+};
+ACT.reportagain = function () { S.rep = null; go('report'); };
+ACT.gostatus = function (el) { go('status', { ref: el.dataset.ref }); };
+
+/* ===================== public: concern status ===================== */
+VIEWS.status = async function (tok) {
+  var ref = S.params.ref || '', out = '';
+  if (ref) {
+    try {
+      var j = await api('concernStatus', { ref: ref }); if (tok !== S.rtok) return;
+      out = '<div class="card y"><div class="row"><b>' + esc(j.ref) + '</b><span class="chip st-' + stKey(j.status) + '">' + esc(stName(j.status)) + '</span></div><p>' + esc(nm(j.room)) + ' · ' + esc(catName(j.category)) + '</p><p class="muted">' + t('reported_on') + ': ' + dt(j.ts) + '<br>' + t('updated_on') + ': ' + dt(j.updatedTs) + '</p></div>';
+    } catch (e) { out = '<div class="banner bad">' + esc(errMsg(e)) + '</div>'; }
+  }
+  setApp(backBtn() + '<h1 class="title">' + t('btn_status') + '</h1><label>' + t('ref_label') + '</label><input id="st_ref" placeholder="HK-2610-0001" value="' + esc(ref) + '" autocapitalize="characters" autocomplete="off"><p><button class="btn p c" data-act="dostatus">' + t('check') + '</button></p>' + out);
+};
+ACT.dostatus = function () { var v = ($('#st_ref').value || '').trim(); if (v) { S.params.ref = v; render(); } };
+
+/* ===================== staff: login ===================== */
+VIEWS.login = async function (tok) {
+  var u = await api('users'); if (tok !== S.rtok) return;
+  setApp(backBtn() + '<h1 class="title">' + t('login_title') + '</h1><label>' + t('who') + '</label><select id="lg_user"><option value="">' + t('choose_name') + '</option>' +
+    u.users.map(function (x) { return '<option value="' + esc(x.userId) + '"' + (ls('hk_last') === x.userId ? ' selected' : '') + '>' + esc(x.name) + '</option>'; }).join('') + '</select>' +
+    '<label>' + t('pin') + '</label><input id="lg_pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off"><div id="lg_err" class="banner bad" hidden></div>' +
+    '<p><button class="btn p c" data-act="dologin">' + t('login') + '</button></p>');
+};
+ACT.staff = function () { if (S.user && S.token) go('staff', { tab: 'today' }); else go('login'); };
+ACT.dologin = async function (el) {
+  var uid = $('#lg_user').value, pin = $('#lg_pin').value;
+  if (!uid || !pin) { toast(t('choose_name')); return; }
+  el.disabled = true;
+  try {
+    var j = await api('login', { userId: uid, pin: pin });
+    S.token = j.token; S.user = j.user; ls('hk_token', j.token); ls('hk_user', JSON.stringify(j.user)); ls('hk_last', uid); ls('hk_since', null);
+    unlockAudio(); startPulse(); go('staff', { tab: 'today' }, true);
+  } catch (e) { var b = $('#lg_err'); b.textContent = errMsg(e); b.hidden = false; el.disabled = false; }
+};
+ACT.logout = function () { clearSession(); ls('hk_since', null); S.pulse = null; go('home', {}, true); };
+
+/* ===================== staff: shell + tabs ===================== */
+VIEWS.staff = async function (tok) {
+  if (!S.token || !S.user) { go('login', {}, true); return; }
+  var tab = S.params.tab || 'today';
+  S.params.tab = tab; updateNav();
+  if (!pulseTimer) startPulse();
+  setApp('<p class="muted">' + t('loading') + '</p>');
+  var fn = { today: tabToday, concerns: tabConcerns, stock: tabStock, more: tabMore }[tab];
+  await fn(tok);
+};
+ACT.tab = function (el) { S.params = { tab: el.dataset.tab }; try { history.replaceState({ view: 'staff', params: S.params }, ''); } catch (e) {} render(); window.scrollTo(0, 0); };
+
+function stateChip(c) {
+  var sym = { done: '✓', late: '✓', missed: '✗', due: '●', pending: '○' }[c.s];
+  return '<span class="chip s-' + c.s + '">' + sym + ' ' + esc(c.roundId) + ' ' + esc(c.start) + (c.t ? ' · ' + esc(c.t) : '') + '</span>';
+}
+function roomCards(rooms) {
+  var groups = {}, order = [];
+  rooms.forEach(function (r) { if (!groups[r.location]) { groups[r.location] = []; order.push(r.location); } groups[r.location].push(r); });
+  return order.map(function (g) {
+    return '<h2>' + esc(g) + '</h2>' + groups[g].map(function (r) {
+      return '<div class="card"><div class="row"><b>' + esc(nm(r)) + '</b></div><div class="wrap" style="margin-top:6px">' + r.cells.map(stateChip).join('') + '</div></div>';
+    }).join('');
+  }).join('');
+}
+async function tabToday(tok) {
+  var d = await api('today'); if (tok !== S.rtok) return;
+  var due = 0, missed = 0, done = 0, total = 0;
+  d.rooms.forEach(function (r) { r.cells.forEach(function (c) { total++; if (c.s === 'done' || c.s === 'late') done++; else if (c.s === 'due') due++; else if (c.s === 'missed') missed++; }); });
+  var msg = '';
+  if (d.holiday) msg += '<div class="banner info">' + t('holiday') + ': ' + esc(d.holiday) + '</div>';
+  if (!total) msg += '<div class="banner info">' + t('no_rounds') + '</div>';
+  else {
+    if (due) msg += '<div class="banner warn"><b>' + t('due_now') + ':</b> ' + due + '</div>';
+    if (missed) msg += '<div class="banner bad"><b>' + t('overdue') + ':</b> ' + missed + '</div>';
+    if (!due && !missed) msg += '<div class="banner ok">' + t('on_track') + '</div>';
+  }
+  setApp('<h1 class="title">' + t('tab_today') + '</h1><button class="btn p" data-act="scan">' + t('scan_btn') + '<small>' + t('scan_hint') + '</small></button>' + msg +
+    (total ? '<p class="muted">' + t('today_progress') + ': <b>' + done + ' ' + t('of') + ' ' + total + '</b></p>' : '') + roomCards(d.rooms));
+}
+async function refreshTodayQuiet() {
+  try { var d = await api('today'); if (S.view !== 'staff' || S.params.tab !== 'today') return; var y = window.scrollY; await tabToday(S.rtok); window.scrollTo(0, y); } catch (e) {}
+}
+
+/* ---- concerns ---- */
+async function tabConcerns(tok) {
+  var j = await api('concerns'); if (tok !== S.rtok) return;
+  S.concerns = j.concerns;
+  var f = S.cf = S.cf || 'Open';
+  var cnt = { 'Open': 0, 'In Progress': 0, 'Closed': 0 };
+  j.concerns.forEach(function (c) { cnt[c.status]++; });
+  var list = j.concerns.filter(function (c) { return c.status === f; });
+  var filt = [['Open', 'f_open'], ['In Progress', 'f_prog'], ['Closed', 'f_closed']].map(function (x) {
+    return '<button class="chip' + (f === x[0] ? ' st-' + stKey(x[0]) : '') + '" data-act="cfilter" data-f="' + x[0] + '" style="cursor:pointer;font:500 14px Jost,sans-serif;padding:6px 12px">' + t(x[1]) + ' (' + cnt[x[0]] + ')</button>';
+  }).join('');
+  setApp('<h1 class="title">' + t('concerns_title') + '</h1><div class="wrap">' + filt + '</div>' + (list.length ? list.map(concernCard).join('') : '<p class="muted">' + t('none_here') + '</p>'));
+}
+function concernCard(c) {
+  var act = '';
+  if (c.status === 'Open') act += '<button class="btn s" data-act="cstart" data-ref="' + esc(c.ref) + '">' + t('act_start') + '</button> ';
+  if (c.status !== 'Closed') act += '<button class="btn s p" data-act="cclose" data-ref="' + esc(c.ref) + '">' + t('act_close') + '</button>';
+  if (c.status === 'Closed' && isMgr()) act += '<button class="btn s" data-act="creopen" data-ref="' + esc(c.ref) + '">' + t('act_reopen') + '</button>';
+  return '<div class="card"><div class="row"><b>' + esc(c.ref) + '</b><span class="chip st-' + stKey(c.status) + '">' + esc(stName(c.status)) + '</span></div>' +
+    '<div>' + esc(nm(c.room)) + ' · ' + esc(catName(c.category)) + '</div>' +
+    '<div class="muted">' + dt(c.ts) + ' · ' + (c.source === 'Inspection' ? t('from_insp') : t('from_person')) + (c.reporter ? ' · ' + esc(c.reporter) : '') + '</div>' +
+    '<p>' + esc(c.text) + '</p>' +
+    (c.photoId ? '<button class="link" data-act="showphoto" data-id="' + esc(c.photoId) + '">' + t('view_photo') + '</button> ' : '') +
+    (c.afterPhotoId ? '<button class="link" data-act="showphoto" data-id="' + esc(c.afterPhotoId) + '">' + t('view_after') + '</button>' : '') +
+    (c.closeNote ? '<div class="muted">' + esc(c.closeNote) + '</div>' : '') +
+    (c.handledBy ? '<div class="muted">' + t('handled_by') + ': ' + esc(c.handledBy) + '</div>' : '') +
+    (act ? '<div class="wrap" style="margin-top:8px">' + act + '</div>' : '') + '</div>';
+}
+ACT.cfilter = function (el) { S.cf = el.dataset.f; render(); };
+ACT.cstart = async function (el) { try { await api('concernUpdate', { ref: el.dataset.ref, to: 'inprogress' }); render(); } catch (e) { toast(errMsg(e)); } };
+ACT.creopen = async function (el) { try { await api('concernUpdate', { ref: el.dataset.ref, to: 'open' }); S.cf = 'Open'; render(); } catch (e) { toast(errMsg(e)); } };
+ACT.showphoto = async function (el) {
+  try { var j = await api('photo', { id: el.dataset.id }); modal('<img src="' + j.data + '" alt=""><button class="btn c" data-act="mclose">' + t('ok') + '</button>'); }
+  catch (e) { toast(errMsg(e)); }
+};
+ACT.cclose = function (el) {
+  S.close = { ref: el.dataset.ref, photo: null };
+  var need = S.cfg && S.cfg.requireAfterPhoto;
+  modal('<h3>' + t('close_title') + ' ' + esc(S.close.ref) + '</h3><label>' + t('close_note') + '</label><textarea id="cl_note" maxlength="300"></textarea><label>' + (need ? t('after_photo') : t('after_photo_opt')) + '</label><div id="cl_photo"></div><p><button class="btn p c" data-act="cconfirm">' + t('confirm_close') + '</button></p>');
+  drawPhoto('cl_photo', null, true, function (v) { S.close.photo = v; });
+};
+ACT.cconfirm = async function (el) {
+  var c = S.close; el.disabled = true;
+  try { await api('concernUpdate', { ref: c.ref, to: 'closed', note: ($('#cl_note').value || '').trim(), photo: c.photo || undefined }); closeModal(); toast('✓'); S.cf = 'Closed'; render(); }
+  catch (e) { toast(errMsg(e)); el.disabled = false; }
+};
+
+/* ---- stock list ---- */
+async function tabStock(tok) {
+  if (!S.cache.inv) { var j = await api('inventory'); S.cache.inv = j.items; }
+  if (tok !== S.rtok) return;
+  var g = S.sg = S.sg || 'snacks';
+  setApp('<h1 class="title">' + t('stock_title') + '</h1><div class="seg"><button data-act="sgroup" data-g="snacks" class="' + (g === 'snacks' ? 'sel ok' : '') + '">' + t('snacks') + '</button><button data-act="sgroup" data-g="other" class="' + (g === 'other' ? 'sel ok' : '') + '">' + t('other') + '</button></div>' +
+    '<input id="stk_q" data-in="stockq" placeholder="' + esc(t('search')) + '" style="margin-top:10px" autocomplete="off"><div id="stk_list"></div><p class="muted" style="margin-top:14px">' + t('stock_note') + '</p>');
+  drawStock();
+}
+function drawStock() {
+  var q = (($('#stk_q') || {}).value || '').toLowerCase(), g = S.sg, groups = {}, order = [];
+  S.cache.inv.filter(function (i) { return i.group === g && (!q || (i.nameId + ' ' + i.nameEn).toLowerCase().indexOf(q) >= 0); }).forEach(function (i) {
+    var parts = i.category.split(' | '), cat = S.lang === 'en' ? parts[0] : (parts[1] || parts[0]);
+    if (!groups[cat]) { groups[cat] = []; order.push(cat); } groups[cat].push(i);
+  });
+  $('#stk_list').innerHTML = order.map(function (c) {
+    return '<h2>' + esc(c) + '</h2><div class="card" style="padding:4px 14px">' + groups[c].map(function (i) {
+      var main = S.lang === 'en' ? i.nameEn : i.nameId, sub = S.lang === 'en' ? i.nameId : i.nameEn;
+      return '<div class="row" style="padding:9px 0;border-bottom:1px solid var(--line)"><div>' + esc(main) + (sub && sub !== main ? '<div class="muted" style="font-size:12px">' + esc(sub) + '</div>' : '') + (i.note ? '<div class="muted" style="font-size:12px">' + esc(i.note) + '</div>' : '') + '</div><span class="chip">' + (i.qty ? esc(i.qty) : '–') + '</span></div>';
+    }).join('') + '</div>';
+  }).join('') || '<p class="muted">' + t('none_here') + '</p>';
+}
+ACT.sgroup = function (el) { S.sg = el.dataset.g; render(); };
+INP.stockq = function () { drawStock(); };
+
+/* ---- more ---- */
+async function tabMore() {
+  var perm = ('Notification' in window) ? Notification.permission : 'denied';
+  setApp('<h1 class="title">' + t('more_title') + '</h1><p class="muted">' + t('signed_as') + ': <b>' + esc(S.user.name) + '</b> (' + esc(S.user.role) + ')</p><div class="stack">' +
+    (isMgr() ? '<button class="btn" data-act="gov" data-v="dash">' + t('dash') + '</button>' : '') +
+    (S.user.role === 'admin' ? '<button class="btn" data-act="gov" data-v="labels">' + t('labels') + '</button>' : '') +
+    '<button class="btn" data-act="notif"' + (perm === 'granted' ? ' disabled' : '') + '>' + (perm === 'granted' ? t('notif_done') : perm === 'denied' ? t('notif_no') : t('notif_on')) + '</button>' +
+    '<button class="btn" data-act="pinform">' + t('change_pin') + '</button>' +
+    '<button class="btn d" data-act="logout">' + t('logout') + '</button></div>');
+}
+ACT.gov = function (el) { go(el.dataset.v); };
+ACT.notif = async function () {
+  unlockAudio();
+  try { var p = await Notification.requestPermission(); toast(p === 'granted' ? t('notif_done') : t('notif_no')); render(); } catch (e) { toast(t('notif_no')); }
+};
+ACT.pinform = function () {
+  modal('<h3>' + t('change_pin') + '</h3><label>' + t('old_pin') + '</label><input id="pn_old" type="password" inputmode="numeric" maxlength="6"><label>' + t('new_pin') + '</label><input id="pn_new" type="password" inputmode="numeric" maxlength="6"><p><button class="btn p c" data-act="pinsave">' + t('save') + '</button></p>');
+};
+ACT.pinsave = async function (el) {
+  el.disabled = true;
+  try { await api('changePin', { oldPin: $('#pn_old').value, newPin: $('#pn_new').value }); closeModal(); toast(t('pin_saved')); }
+  catch (e) { toast(errMsg(e)); el.disabled = false; }
+};
+
+/* ===================== scanner ===================== */
+function parseRoomQr(text) {
+  try {
+    var u = new URL(String(text).trim());
+    var room = u.searchParams.get('room'), k = u.searchParams.get('k');
+    if (room && k) return { roomId: room, key: k };
+  } catch (e) {}
+  return null;
+}
+ACT.scan = function () {
+  unlockAudio();
+  var wrap = document.createElement('div'); wrap.className = 'scanner';
+  wrap.innerHTML = '<video playsinline muted></video><div class="frame"></div><div class="sbar"><div id="sc_msg">' + esc(t('scan_point')) + '</div>' +
+    '<details style="margin-top:8px"><summary style="cursor:pointer;font-size:13px;opacity:.8">' + esc(t('paste_qr')) + '</summary><div class="wrap" style="margin-top:6px"><input id="sc_paste" style="flex:1"><button class="btn s" id="sc_go" style="background:#fff">' + esc(t('go')) + '</button></div></details>' +
+    '<button class="btn c" id="sc_cancel">' + esc(t('scan_cancel')) + '</button></div>';
+  document.body.appendChild(wrap);
+  var video = wrap.querySelector('video'), stream = null, alive = true, det = null, canvas = document.createElement('canvas'), busyScan = false;
+  function stop() { alive = false; try { if (stream) stream.getTracks().forEach(function (tr) { tr.stop(); }); } catch (e) {} if (wrap.parentNode) wrap.parentNode.removeChild(wrap); }
+  cleanups.push(stop);
+  async function got(text) {
+    if (!alive || busyScan) return;
+    var q = parseRoomQr(text);
+    if (!q) { $('#sc_msg').textContent = t('scan_bad'); setTimeout(function () { if (alive) $('#sc_msg').textContent = t('scan_point'); busyScan = false; }, 1800); busyScan = true; return; }
+    busyScan = true; stop();
+    try { await beginInspection(q); } catch (e) { toast(errMsg(e)); }
+  }
+  wrap.querySelector('#sc_cancel').onclick = stop;
+  wrap.querySelector('#sc_go').onclick = function () { got($('#sc_paste').value); };
+  if ('BarcodeDetector' in window) { try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { det = null; } }
+  var tick = async function () {
+    if (!alive) return;
+    try {
+      if (video.readyState >= 2 && video.videoWidth) {
+        if (det) {
+          var r = await det.detect(video);
+          if (r && r.length) { await got(r[0].rawValue); }
+        } else if (typeof jsQR === 'function') {
+          var w = Math.min(640, video.videoWidth), h = Math.round(w * video.videoHeight / video.videoWidth);
+          canvas.width = w; canvas.height = h;
+          var cx = canvas.getContext('2d', { willReadFrequently: true }); cx.drawImage(video, 0, 0, w, h);
+          var d = cx.getImageData(0, 0, w, h), c = jsQR(d.data, w, h, { inversionAttempts: 'dontInvert' });
+          if (c && c.data) await got(c.data);
+        }
+      }
+    } catch (e) {}
+    if (alive) setTimeout(tick, 180);
+  };
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }).then(function (s) {
+    if (!alive) { s.getTracks().forEach(function (tr) { tr.stop(); }); return; }
+    stream = s; video.srcObject = s; video.play().catch(function () {}); tick();
+  }).catch(function () { var m = $('#sc_msg'); if (m) m.textContent = t('cam_fail'); });
+};
+
+/* ===================== inspection ===================== */
+async function beginInspection(q) {
+  var j = await api('startInspection', { roomId: q.roomId, key: q.key });
+  S.ins = { data: j, token: j.startToken, answers: {}, notes: {}, photo: null, note: '', t0: Date.now() };
+  go('inspect');
+}
+var OPTS = {
+  check: [['done', 'opt_done', 'ok'], ['notdone', 'opt_notdone', 'bad'], ['action', 'opt_action', 'bad']],
+  refill: [['present', 'opt_present', 'ok'], ['refill', 'opt_refill', 'warn']],
+  mmc: [['clean', 'opt_clean', 'ok'], ['cleaned', 'opt_cleaned', 'warn'], ['action', 'opt_action', 'bad']]
+};
+function itemText(it) { return it[S.lang] || it.en; }
+function needsNote(v) { return v === 'notdone' || v === 'action'; }
+VIEWS.inspect = function () {
+  var I = S.ins; if (!I) { go('staff', { tab: 'today' }, true); return; }
+  var d = I.data, room = d.room;
+  var badge = d.windowStatus === 'Extra' ? '<div class="banner warn">' + t('extra') + '</div>' : d.windowStatus === 'Late' ? '<div class="banner warn">' + t('late_badge') + '</div>' : '<div class="banner ok">' + t('ontime') + '</div>';
+  setApp('<button class="link" data-act="cancelins">← ' + t('scan_cancel') + '</button><h1 class="title">' + esc(nm(room)) + '</h1>' +
+    '<p class="muted">' + t('insp_title') + (d.round ? ' · ' + t('round') + ' ' + esc(roundName(d.round)) + ' (' + d.round.start + ' – ' + d.round.end + ')' : '') + '</p>' + badge +
+    d.items.map(function (it, n) { return '<div class="item" id="it_' + esc(it.itemId) + '"></div>'; }).join('') +
+    '<label>' + t('photo_for_room') + ' <span id="photo_req"></span></label><div id="ins_photo"></div>' +
+    '<label>' + t('overall_note') + '</label><textarea id="ins_note" maxlength="300" data-in="insnote"></textarea>' +
+    '<div class="sticky"><div class="muted" id="ins_prog"></div><button class="btn p c" id="ins_submit" data-act="inssubmit" disabled></button></div>');
+  d.items.forEach(drawItem);
+  drawPhoto('ins_photo', I.photo, true, function (v) { I.photo = v; updateInsFooter(); });
+  updateInsFooter();
+  var iv = setInterval(updateInsFooter, 1000); cleanups.push(function () { clearInterval(iv); });
+};
+function drawItem(it) {
+  var I = S.ins, a = I.answers[it.itemId], el = $('#it_' + it.itemId); if (!el) return;
+  var opts = OPTS[it.type] || OPTS.check;
+  el.innerHTML = '<div class="q">' + esc(itemText(it)) + '</div><div class="seg">' + opts.map(function (o) {
+    return '<button data-act="ans" data-i="' + esc(it.itemId) + '" data-v="' + o[0] + '" class="' + (a === o[0] ? 'sel ' + o[2] : '') + '">' + t(o[1]) + '</button>';
+  }).join('') + '</div>' +
+    (needsNote(a) ? '<div class="nb"><input data-in="insitemnote" data-i="' + esc(it.itemId) + '" maxlength="200" placeholder="' + esc(t('note_ph')) + '" value="' + esc(I.notes[it.itemId] || '') + '"></div>' : '');
+}
+ACT.ans = function (el) {
+  var I = S.ins, id = el.dataset.i, it = I.data.items.filter(function (x) { return x.itemId === id; })[0];
+  I.answers[id] = el.dataset.v; drawItem(it); updateInsFooter();
+  if (needsNote(el.dataset.v)) { var n = $('#it_' + id + ' input'); if (n) n.focus(); }
+};
+INP.insitemnote = function (el) { S.ins.notes[el.dataset.i] = el.value; updateInsFooter(); };
+INP.insnote = function (el) { S.ins.note = el.value; };
+function insState() {
+  var I = S.ins, d = I.data, answered = 0, hard = false, notesOk = true;
+  d.items.forEach(function (it) {
+    var a = I.answers[it.itemId]; if (!a) return; answered++;
+    if (needsNote(a)) { hard = true; if ((I.notes[it.itemId] || '').trim().length < 3) notesOk = false; }
+  });
+  var photoNeed = !!(d.room.photoRequired || hard);
+  var left = Math.max(0, Math.ceil(d.minSeconds - (Date.now() - I.t0) / 1000));
+  return { answered: answered, total: d.items.length, notesOk: notesOk, photoNeed: photoNeed, left: left, all: answered === d.items.length };
+}
+function updateInsFooter() {
+  if (S.view !== 'inspect' || !S.ins) return;
+  var s = insState(), b = $('#ins_submit'); if (!b) return;
+  var pr = $('#photo_req'); if (pr) pr.textContent = s.photoNeed ? '(' + t('photo_req') + ')' : '';
+  var ok = s.all && s.notesOk && (!s.photoNeed || S.ins.photo) && s.left === 0;
+  b.disabled = !ok;
+  b.textContent = s.left > 0 ? t('wait_s', { s: s.left }) : t('submit');
+  var msg = t('answered', { a: s.answered, n: s.total });
+  if (s.all && !s.notesOk) msg += ' · ' + t('need_notes');
+  else if (s.all && s.photoNeed && !S.ins.photo) msg += ' · ' + t('photo_req');
+  $('#ins_prog').textContent = msg;
+}
+ACT.cancelins = function () { S.ins = null; go('staff', { tab: 'today' }, true); };
+ACT.inssubmit = async function (el) {
+  var I = S.ins, s = insState(); if (!s.all) return;
+  el.disabled = true; el.textContent = t('saving');
+  try {
+    var j = await api('submitInspection', {
+      startToken: I.token, photo: I.photo || undefined, note: I.note,
+      answers: I.data.items.map(function (it) { return { itemId: it.itemId, v: I.answers[it.itemId], note: needsNote(I.answers[it.itemId]) ? (I.notes[it.itemId] || '').trim() : '' }; })
+    });
+    S.done = { res: j, room: I.data.room, round: I.data.round }; S.ins = null; S.cache.inv = S.cache.inv; go('done', {}, true);
+  } catch (e) {
+    toast(errMsg(e)); updateInsFooter();
+    if (e && (e.code === 'dup' || e.code === 'used' || e.code === 'expired')) { S.ins = null; setTimeout(function () { go('staff', { tab: 'today' }, true); }, 1800); }
+  }
+};
+VIEWS.done = function () {
+  var d = S.done; if (!d) { go('staff', { tab: 'today' }, true); return; }
+  var n = d.res.concerns.length;
+  setApp('<h1 class="title">' + t('done_title') + '</h1><div class="banner ok" style="font-size:18px">✓ ' + esc(nm(d.room)) + (d.round ? ' · ' + esc(d.round.roundId) : '') + '</div>' +
+    (n ? '<div class="banner warn">' + t('done_concerns', { n: n }) + ': ' + esc(d.res.concerns.join(', ')) + '</div>' : '') +
+    '<div class="stack"><button class="btn p" data-act="scan">' + t('done_next') + '</button><button class="btn" data-act="todaybtn">' + t('done_today') + '</button></div>');
+};
+ACT.todaybtn = function () { go('staff', { tab: 'today' }, true); };
+
+/* ===================== dashboard ===================== */
+function pctBar(p) { return '<div class="bar"><i class="' + (p === null ? '' : p < 60 ? 'lo' : p < 85 ? 'mid' : '') + '" style="width:' + (p || 0) + '%"></i></div>'; }
+VIEWS.dash = async function (tok) {
+  if (!isMgr()) { go('staff', { tab: 'more' }, true); return; }
+  var d = await api('dashboard'); if (tok !== S.rtok) return;
+  S.dash = d; var c = d.concerns;
+  setApp(backBtn() + '<h1 class="title">' + t('dash_title') + '</h1>' +
+    '<div class="stats"><div class="stat"><b>' + (d.month_.pct === null ? '–' : d.month_.pct + '%') + '</b><span>' + t('d_month') + '</span></div><div class="stat"><b>' + (c.open + c.inProgress) + '</b><span>' + t('d_open') + '</span></div><div class="stat"><b>' + (c.avgCloseHours === null ? '–' : c.avgCloseHours + t('hours')) + '</b><span>' + t('d_avg') + '</span></div></div>' +
+    '<button class="btn c" data-act="copyweek">' + t('copy_week') + '</button>' +
+    '<h2>' + t('d_rooms') + '</h2>' + d.rooms.map(function (r) {
+      return '<div class="card"><div class="row"><span>' + esc(nm(r)) + '</span><b>' + (r.totals.pct === null ? '–' : r.totals.pct + '%') + '</b></div>' + pctBar(r.totals.pct) + '</div>';
+    }).join('') +
+    (c.repeat.length ? '<h2>' + t('d_repeat') + '</h2><div class="card">' + c.repeat.map(function (r) { return '<div class="row"><span>' + esc(nm(r.room)) + '</span><b>' + r.count + '</b></div>'; }).join('') + '</div>' : '') +
+    '<h2>' + t('d_user') + '</h2><div class="card">' + (d.byUser.map(function (u) { return '<div class="row"><span>' + esc(u.name) + '</span><b>' + u.count + (u.late ? ' <small class="muted">(' + u.late + ' ' + t('late').toLowerCase() + ')</small>' : '') + '</b></div>'; }).join('') || '<span class="muted">' + t('no_data') + '</span>') + '</div>' +
+    (d.fast.length ? '<h2>' + t('d_fast') + '</h2><div class="banner warn">' + d.fast.map(function (f) { return esc(f.name) + ' · ' + f.gapSec + 's · ' + esc(f.rooms.join(' → ')) + ' · ' + esc(f.ts.slice(11, 16)); }).join('<br>') + '</div>' : ''));
+};
+ACT.copyweek = function () {
+  var txt = S.dash && S.dash.weeklyText || '';
+  var done = function () { toast(t('copied')); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function () { modal('<p>' + esc(txt) + '</p>'); });
+  else modal('<p>' + esc(txt) + '</p>');
+};
+
+/* ===================== QR labels ===================== */
+function defaultBase() {
+  var b = ls('hk_base'); if (b) return b;
+  try { return (S.cfg && S.cfg.appUrl) || (location.origin + location.pathname.replace(/index\.html$/, '')); } catch (e) { return ''; }
+}
+function qrSvg(text) {
+  var q = qrcode(0, 'M'); q.addData(text); q.make();
+  var n = q.getModuleCount(), path = '';
+  for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) path += 'M' + (c + 2) + ' ' + (r + 2) + 'h1v1h-1z';
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + (n + 4) + ' ' + (n + 4) + '" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="' + path + '" fill="#111"/></svg>';
+}
+VIEWS.labels = async function (tok) {
+  if (!S.user || S.user.role !== 'admin') { go('staff', { tab: 'more' }, true); return; }
+  var j = await api('labels'); if (tok !== S.rtok) return;
+  S.labels = j.rooms;
+  setApp('<div class="noprint">' + backBtn() + '<h1 class="title">' + t('labels_title') + '</h1><label>' + t('labels_url') + '</label><input id="lb_base" value="' + esc(defaultBase()) + '">' +
+    '<div class="wrap" style="margin:10px 0"><button class="btn s" data-act="lbmake">' + t('label_make') + '</button><button class="btn s p" data-act="print">' + t('label_print') + '</button></div><p class="muted">' + t('labels_note') + '</p></div><div id="lb_grid" class="label-grid"></div>');
+  drawLabels();
+};
+function drawLabels() {
+  var base = ($('#lb_base').value || '').trim(); if (base.indexOf('?') >= 0) base = base.split('?')[0];
+  ls('hk_base', base);
+  $('#lb_grid').innerHTML = S.labels.map(function (r) {
+    var url = base + (base.slice(-1) === '/' || /\.html$/.test(base) ? '' : '/') + '?room=' + encodeURIComponent(r.roomId) + '&k=' + encodeURIComponent(r.key);
+    return '<div class="label"><div class="bar2"></div>' + qrSvg(url) + '<h3>' + esc(r.nameEn) + '</h3>' + (r.nameId !== r.nameEn ? '<div class="ln">' + esc(r.nameId) + '</div>' : '') +
+      '<div class="code">' + esc(r.roomId) + '</div><div class="ln">' + t('label_l1') + '</div><div class="ln">' + t('label_l2') + '</div><div class="ln" style="color:#777">' + t('label_l3') + '</div></div>';
+  }).join('');
+}
+ACT.lbmake = drawLabels;
+
+
+/* ===================== call / WhatsApp / HR ===================== */
+function telNum(v) { return String(v || '').replace(/[^0-9+]/g, ''); }
+function waNum(v) { var d = String(v || '').replace(/[^0-9]/g, ''); if (/^0/.test(d)) d = '62' + d.slice(1); return d; }
+ACT.call = async function (el) {
+  var cfg = await ensureCfg(), c = cfg.contacts || {}, rid = el && el.dataset && el.dataset.room;
+  var room = rid ? cfg.rooms.filter(function (r) { return r.roomId === rid; })[0] : null;
+  var text = room ? encodeURIComponent(t('call_wa_text', { r: nm(room) })) : '';
+  function grp(title, phone, wa) {
+    if (!phone && !wa) return '';
+    return '<h2>' + esc(title) + '</h2><div class="stack">' +
+      (phone ? '<a class="btn" href="tel:' + esc(telNum(phone)) + '" style="text-decoration:none;text-align:center;display:block">' + t('call_call') + ' · ' + esc(phone) + '</a>' : '') +
+      (wa ? '<a class="btn" href="https://wa.me/' + esc(waNum(wa)) + '?text=' + text + '" target="_blank" rel="noopener" style="text-decoration:none;text-align:center;display:block">' + t('call_wa') + '</a>' : '') + '</div>';
+  }
+  var body = grp(t('call_hk'), c.hkPhone, c.hkWa) + grp(t('call_hr'), c.hrPhone, c.hrWa);
+  modal('<h3>' + t('call_title') + '</h3>' + (body || '<p class="muted">' + t('call_none') + '</p>') + '<button class="btn c" data-act="mclose" style="margin-top:12px">' + t('ok') + '</button>');
+};
+
+/* ===================== global wiring ===================== */
+ACT.mclose = closeModal;
+ACT.home = function () { if (S.view !== 'home') go('home'); };
+ACT.back = function () { if (history.length > 1 && history.state) history.back(); else go('home', {}, true); };
+ACT.go = function (el) { go(el.dataset.v); };
+ACT.retry = function () { render(); };
+ACT.lang = function (el) { S.lang = el.dataset.l; ls('hk_lang', S.lang); render(); };
+
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-act],[data-stop]');
+  if (!el) return;
+  if (!el.dataset.act) return;
+  var f = ACT[el.dataset.act];
+  if (f) { e.preventDefault(); try { var r = f(el, e); if (r && r.catch) r.catch(function (x) { toast(errMsg(x)); }); } catch (x) { toast(errMsg(x)); } }
+});
+document.addEventListener('input', function (e) {
+  var el = e.target.closest('[data-in]'); if (el && INP[el.dataset.in]) INP[el.dataset.in](el);
+});
+document.addEventListener('change', function (e) {
+  var el = e.target.closest('select[data-in]'); if (el && INP[el.dataset.in]) INP[el.dataset.in](el);
+});
+document.addEventListener('visibilitychange', function () { if (!document.hidden && S.token) doPulse(); });
+
+/* ===================== boot ===================== */
+if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+(function boot() {
+  var i = initialRoute();
+  S.view = i.view; S.params = i.params;
+  try { history.replaceState({ view: S.view, params: S.params }, ''); } catch (e) {}
+  if (S.token) startPulse();
+  render();
+})();
+})();
+</script>
+</body>
+</html>
