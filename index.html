@@ -8,12 +8,12 @@
 <meta name="mobile-web-app-capable" content="yes">
 <title>Mentari Housekeeping</title>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
-@font-face{font-family:Jost;font-weight:300;font-display:swap;src:url(fonts/jost-latin-300-normal.woff2) format('woff2')}
-@font-face{font-family:Jost;font-weight:400;font-display:swap;src:url(fonts/jost-latin-400-normal.woff2) format('woff2')}
-@font-face{font-family:Jost;font-weight:500;font-display:swap;src:url(fonts/jost-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:Jost;font-weight:300;font-display:swap;src:url(jost-latin-300-normal.woff2) format('woff2')}
+@font-face{font-family:Jost;font-weight:400;font-display:swap;src:url(jost-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Jost;font-weight:500;font-display:swap;src:url(jost-latin-500-normal.woff2) format('woff2')}
 :root{--y:#FBCE07;--r:#DD1D21;--ink:#1d1d1d;--grey:#6b6b6b;--line:#e4e4e0;--soft:#f6f6f3;--ok:#2e7d32;--late:#d98200;--bad:#c62828;--bg:#fff}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -150,12 +150,12 @@ body.busy #busy{width:75%;transition:width 8s cubic-bezier(.1,.7,.2,1)}
 <div id="toast"></div>
 <div id="layer"></div>
 <script src="config.js"></script>
-<script src="vendor/qrcode.js"></script>
-<script src="vendor/jsQR.js"></script>
+<script src="qrcode.js"></script>
+<script src="jsQR.js"></script>
 <script>
 (function () {
 'use strict';
-var VERSION = '1.1.0';
+var VERSION = '1.1.2';
 var CFG = window.HK_CONFIG || {};
 
 /* ===================== translations ===================== */
@@ -435,7 +435,7 @@ function beep() {
 function sysNotify(title, body) {
   try {
     if (!('Notification' in window) || Notification.permission !== 'granted' || !document.hidden) return;
-    if (navigator.serviceWorker && navigator.serviceWorker.ready) navigator.serviceWorker.ready.then(function (r) { r.showNotification(title, { body: body, icon: 'icons/icon-192.png', tag: 'hk-' + title }); });
+    if (navigator.serviceWorker && navigator.serviceWorker.ready) navigator.serviceWorker.ready.then(function (r) { r.showNotification(title, { body: body, icon: 'icon-192.png', tag: 'hk-' + title }); });
   } catch (e) {}
 }
 function modal(html) { $('#layer').innerHTML = '<div class="modal" data-act="mclose"><div class="box" data-stop="1">' + html + '</div></div>'; }

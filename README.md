@@ -13,7 +13,7 @@ English, Bahasa Indonesia and Bahasa Melayu. No APK needed: staff open the link 
 ## Setup (about 30 minutes)
 
 ### 1. Housekeeping Gmail
-Create a separate Gmail account for housekeeping (for example `mentari.housekeeping@gmail.com`). Do all steps below while signed in to it. Emails are sent from this account.
+Create a separate Gmail account for housekeeping (for example `mentari.housekeeping@gmail.com`). The script itself lives in the owner's (Iggy's) Google account. To make emails appear from the housekeeping Gmail: in the owner's Gmail go to Settings > Accounts > Send mail as > Add another email address, enter the housekeeping address, and confirm using the code sent to it. Then put that address in the **Config** sheet as `MAIL_FROM`. If this is not set up, emails simply come from the owner's address.
 
 ### 2. Google Sheet and script
 1. In Google Drive create a new Google Sheet named **Mentari Housekeeping**.
@@ -35,7 +35,7 @@ Create a separate Gmail account for housekeeping (for example `mentari.housekeep
 3. After any later code change use **Deploy > Manage deployments > Edit > New version**.
 
 ### 5. GitHub Pages
-1. Create a repository (for example `mentari-housekeeping`) and upload everything in this folder.
+1. Create a repository and upload every file in this folder.
 2. Edit `config.js`: `window.HK_CONFIG = { API_URL: 'PASTE THE /exec URL HERE' };`
 3. Settings > Pages > Deploy from branch `main`, folder `/ (root)`.
 4. Your app address will be `https://<account>.github.io/mentari-housekeeping/`. Put it in the **Config** sheet as `APP_URL` (used in emails).
@@ -68,4 +68,4 @@ Open the app address in Chrome (Android) or Safari (iPhone) and **Add to Home sc
 - Pop-ups, beep and phone alerts work **only while the app is open** (it checks every 45 seconds). A web app cannot alert when fully closed without a push service. Option: **Housekeeping > Telegram alerts (optional)** gives alerts with the app closed.
 
 ## Files
-`index.html` app, `config.js` backend address, `sw.js` offline shell, `manifest.json`, `icons/`, `fonts/`, `vendor/` (jsQR, qrcode-generator), `apps-script/Code.gs` and `appsscript.json` backend.
+All files sit in one folder so they can be uploaded from a phone: `index.html` app, `config.js` backend address, `sw.js` offline shell, `manifest.json`, `icon-*.png`, `jost-*.woff2` fonts, `jsQR.js` and `qrcode.js` libraries, `Code.gs` and `appsscript.json` backend (paste these two into Apps Script).
